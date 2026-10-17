@@ -3,12 +3,16 @@
 KAFSHARLevelerAudioProcessorEditor::KAFSHARLevelerAudioProcessorEditor(KAFSHARLevelerAudioProcessor& p)
     : AudioProcessorEditor(&p), audioProcessor(p)
 {
-    setSize(440, 330);
+    setOpaque(true);
+    setResizable(false, false);
+    setWantsKeyboardFocus(false);
+    setSize(520, 390);
     titleLabel.setText("KAFSHAR  /  LEVELER", juce::dontSendNotification);
     titleLabel.setFont(juce::Font(juce::FontOptions(23.0f, juce::Font::bold)));
     titleLabel.setColour(juce::Label::textColourId, juce::Colour(0xff56d8e8));
     titleLabel.setJustificationType(juce::Justification::centredLeft);
     addAndMakeVisible(titleLabel);
+    titleLabel.setVisible(true);
 
     configureSlider(targetSlider, targetLabel, "TARGET LEVEL");
     configureSlider(responseSlider, responseLabel, "RESPONSE");
@@ -38,6 +42,7 @@ void KAFSHARLevelerAudioProcessorEditor::configureSlider(juce::Slider& slider, j
     label.setColour(juce::Label::textColourId, juce::Colour(0xffaab8c5));
     label.setJustificationType(juce::Justification::centredLeft);
     addAndMakeVisible(label);
+    label.setVisible(true);
     slider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 22);
     slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour(0xff22b8cf));
@@ -45,11 +50,16 @@ void KAFSHARLevelerAudioProcessorEditor::configureSlider(juce::Slider& slider, j
     slider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::white);
     slider.setColour(juce::Slider::textBoxBackgroundColourId, juce::Colour(0xff202b36));
     addAndMakeVisible(slider);
+    slider.setVisible(true);
+    slider.setEnabled(true);
 }
 
 void KAFSHARLevelerAudioProcessorEditor::paint(juce::Graphics& g)
 {
     g.fillAll(juce::Colour(0xff10171f));
+    g.setFont(juce::Font(juce::FontOptions(12.0f)));
+    g.setColour(juce::Colour(0xffaab8c5));
+    g.drawText("AUDIO LEVEL CONTROL", 22, getHeight() - 24, getWidth() - 44, 14, juce::Justification::centredLeft);
     g.setColour(juce::Colour(0xff243541));
     g.drawRoundedRectangle(getLocalBounds().toFloat().reduced(8.0f), 12.0f, 1.0f);
     g.setColour(juce::Colour(0xff56d8e8));
@@ -59,7 +69,7 @@ void KAFSHARLevelerAudioProcessorEditor::paint(juce::Graphics& g)
 void KAFSHARLevelerAudioProcessorEditor::resized()
 {
     titleLabel.setBounds(22, 14, getWidth() - 44, 32);
-    const int top = 72, cellW = (getWidth() - 48) / 2, cellH = 118;
+    const int top = 72, cellW = (getWidth() - 48) / 2, cellH = (getHeight() - 100) / 2;
     targetLabel.setBounds(24, top, cellW, 18);
     targetSlider.setBounds(20, top + 17, cellW, cellH - 12);
     responseLabel.setBounds(24 + cellW, top, cellW, 18);
